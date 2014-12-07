@@ -50,7 +50,7 @@ public class GoogleLoginActivity extends FragmentActivity implements
         ConnectionCallbacks, OnConnectionFailedListener,
         ResultCallback<People.LoadPeopleResult>, View.OnClickListener {
 
-    private static final String TAG = "android-plus-quickstart";
+    private static final String TAG = GoogleLoginActivity.class.getSimpleName();
     public static final String SCOPE_PICASA = "http://picasaweb.google.com/data/";
     private static final int STATE_DEFAULT = 0;
     private static final int STATE_SIGN_IN = 1;
@@ -140,6 +140,7 @@ public class GoogleLoginActivity extends FragmentActivity implements
                 .addScope(Plus.SCOPE_PLUS_PROFILE)
                 .addScope(new Scope(SCOPE_PICASA))
                 .build();
+
     }
 
     @Override
@@ -402,6 +403,7 @@ public class GoogleLoginActivity extends FragmentActivity implements
                 return super.onCreateDialog(id);
         }
     }
+
     //https://developers.google.com/+/mobile/android/sign-in
     //https://gist.github.com/ianbarber/9607551
     private class RetrieveTokenTask extends AsyncTask<String, Void, String> {
@@ -409,8 +411,11 @@ public class GoogleLoginActivity extends FragmentActivity implements
         @Override
         protected String doInBackground(String... params) {
             String accountName = params[0];
-            String[] scopes = new String[]{"profile",SCOPE_PICASA};
-            //String scopes = "oauth2:profile email";
+            //https://www.googleapis.com/auth/plus.login
+            //https://www.googleapis.com/auth/plus.me
+            String[] scopes = new String[]{
+                    Plus.SCOPE_PLUS_PROFILE.gs(),
+                    SCOPE_PICASA};
             String token = null;
             try {
                 token = GoogleAuthUtil.getToken(getApplicationContext(), accountName, "oauth2:" + TextUtils.join(" ", scopes));
@@ -436,9 +441,10 @@ public class GoogleLoginActivity extends FragmentActivity implements
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //((TextView) findViewById(R.id.token_value)).setText("Token Value: " + s);
-            Log.e(TAG,"Token Value: " + s);
+            Log.e(TAG, "Token Value: " + s);
         }
     }
+
     private String getAccountName() {
         return Plus.AccountApi.getAccountName(mGoogleApiClient);
     }
