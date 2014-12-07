@@ -1,5 +1,8 @@
 package dev.shoulongli.appframework.oauth.google;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
@@ -23,8 +26,10 @@ import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -32,6 +37,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -45,12 +51,13 @@ public class GoogleLoginActivity extends FragmentActivity implements
         ResultCallback<People.LoadPeopleResult>, View.OnClickListener {
 
     private static final String TAG = "android-plus-quickstart";
-    public static final Scope SCOPE_PICASA = new Scope("http://picasaweb.google.com/data/");
+    public static final String SCOPE_PICASA = "http://picasaweb.google.com/data/";
     private static final int STATE_DEFAULT = 0;
     private static final int STATE_SIGN_IN = 1;
     private static final int STATE_IN_PROGRESS = 2;
 
     private static final int RC_SIGN_IN = 0;
+    private static final int REQ_SIGN_IN_REQUIRED = 1;
 
     private static final int DIALOG_PLAY_SERVICES_ERROR = 0;
 
@@ -129,7 +136,9 @@ public class GoogleLoginActivity extends FragmentActivity implements
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(Plus.API, Plus.PlusOptions.builder().build())
-                .addScope(Plus.SCOPE_PLUS_LOGIN).addScope(SCOPE_PICASA)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .addScope(Plus.SCOPE_PLUS_PROFILE)
+                .addScope(new Scope(SCOPE_PICASA))
                 .build();
     }
 
@@ -203,6 +212,9 @@ public class GoogleLoginActivity extends FragmentActivity implements
         mSignInButton.setEnabled(false);
         mSignOutButton.setEnabled(true);
         mRevokeButton.setEnabled(true);
+
+        //retrieve access token
+        new RetrieveTokenTask().execute(getAccountName());
 
         // Retrieve some profile information to personalize our app for the user.
         Person currentUser = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
@@ -389,5 +401,45 @@ public class GoogleLoginActivity extends FragmentActivity implements
             default:
                 return super.onCreateDialog(id);
         }
+    }
+    //https://developers.google.com/+/mobile/android/sign-in
+    //https://gist.github.com/ianbarber/9607551
+    private class RetrieveTokenTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String accountName = params[0];
+            String[] scopes = new String[]{"profile",SCOPE_PICASA};
+            //String scopes = "oauth2:profile email";
+            String token = null;
+            try {
+                token = GoogleAuthUtil.getToken(getApplicationContext(), accountName, "oauth2:" + TextUtils.join(" ", scopes));
+            } catch (IOException e) {
+                // network or server error, the call is expected to succeed if you try again later.
+                // Don't attempt to call again immediately - the request is likely to
+                // fail, you'll hit quotas or back-off.
+                Log.e(TAG, e.getMessage());
+            } catch (UserRecoverableAuthException e) {
+                // Recover
+                //startActivityForResult(e.getIntent(), REQ_SIGN_IN_REQUIRED);
+            } catch (GoogleAuthException e) {
+                // Failure. The call is not expected to ever succeed so it should not be
+                // retried.
+                Log.e(TAG, e.getMessage());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            return token;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            //((TextView) findViewById(R.id.token_value)).setText("Token Value: " + s);
+            Log.e(TAG,"Token Value: " + s);
+        }
+    }
+    private String getAccountName() {
+        return Plus.AccountApi.getAccountName(mGoogleApiClient);
     }
 }
