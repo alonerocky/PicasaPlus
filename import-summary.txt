@@ -1,0 +1,91 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* ant.properties
+* ant.properties.bak
+* build.xml
+* docs/
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android.htm
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/9001f0ab273d0335961046b8f464f324.png
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/addthis_widget.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/afa5f1047c1344242b2b876bc86e872c.jpg
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/app-znDww.png
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/base.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/clipboard.swf
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/comment.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/core036.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/d6bfa1bf89cdf9dd4dfe24863308d6bd.png
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/e-201237.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/ef2ea94996d45b6850dfefb75a53a160.png
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/f90976050528438f78149f4520ab91f3.png
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/ff4%20copy.jpg
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/g.gif
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/ga.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/gprofile_button-44.png
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/gprofiles.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/hovercard.css
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/icon_sad.gif
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/jquery.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/jquery_002.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/l10n.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/lg-share-en.gif
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/loading.gif
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/menu.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/ngg.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/nggallery.css
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/oauth-android-logo.png
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/quant.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/services.css
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/sh101.htm
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/shBrushJava.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/shBrushXml.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/shCore.css
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/shCore.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/shThemeDefault.css
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/sharing.css
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/sharing.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/show_ads.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/shutter-reloaded.css
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/shutter-reloaded.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/swfobject.js
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/widget095.css
+* docs/OAuth in Android using the Google APIs Client Library for Java _ Do it yourself Android_files/wpgroho.js
+* docs/readme.txt
+* docs/readme.txt.bak
+* docs/todo.txt
+* local.properties.bak
+* picasaplus.keystore
+* proguard-project.txt
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => app/src/main/AndroidManifest.xml
+* assets/ => app/src/main/assets/
+* libs/gdata-2.2.1-alpha.jar => app/libs/gdata-2.2.1-alpha.jar
+* res/ => app/src/main/res/
+* src/ => app/src/main/java/
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)
