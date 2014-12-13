@@ -32,7 +32,7 @@ public class PicasaWebAlbum
 {
 	//https://developers.google.com/picasa-web/docs/2.0/developers_guide_protocol
 	//https://developers.google.com/gdata/docs/2.0/reference#PartialUpdate
-	public static final String ALBUM_FIELDS = "entry(title,gphoto:id,gphoto:user,gphoto:numphotos,media:group(media:thumbnail),link[@rel='http://schemas.google.com/g/2005#feed'](@href))";
+	public static final String ALBUM_FIELDS = "entry(title,gphoto:id,gphoto:user,gphoto:numphotos,media:group(media:thumbnail))";
 
 	/*
 	"entry(title,gphoto:numphotos,media:group(media:thumbnail),link[@rel='http://schemas.google.com/g/2005#feed'](@href))"
@@ -47,10 +47,10 @@ public class PicasaWebAlbum
   </entry>
   ....
 	 */
-	public static final String PHOTO_FIELDS = "entry(gphoto:id,gphoto:albumid,media:group(media:content,media:thumbnail),link[@rel='http://schemas.google.com/g/2005#feed'](@href))";
+	public static final String PHOTO_FIELDS = "entry(gphoto:id,gphoto:albumid,media:group(media:content,media:thumbnail)";
 
-	public static final String PICASA_WEB_ALBUM_URL = "http://picasaweb.google.com/data/feed/api/user";
-	public static final String PICASA_WEB_ALBUM_URL_ENTRY = "http://picasaweb.google.com/data/entry/api/user";
+	public static final String PICASA_WEB_ALBUM_URL = "https://picasaweb.google.com/data/feed/api/user";
+	public static final String PICASA_WEB_ALBUM_URL_ENTRY = "https://picasaweb.google.com/data/entry/api/user";
 
 	//	public static final String THUMBNAIL_SIZE = "72X54";//72, 54  144, 108   288, 216
 

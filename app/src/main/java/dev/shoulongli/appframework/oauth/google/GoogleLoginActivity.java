@@ -141,8 +141,8 @@ public class GoogleLoginActivity extends FragmentActivity implements
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(Plus.API, Plus.PlusOptions.builder().build())
-                .addScope(Plus.SCOPE_PLUS_LOGIN)
-                .addScope(Plus.SCOPE_PLUS_PROFILE)
+                .addScope(new Scope(SCOPE_PLUS_LOGIN))
+                .addScope(new Scope(SCOPE_PLUS_PROFILE))
                 .addScope(new Scope(SCOPE_PICASA))
                 .build();
 
@@ -234,6 +234,7 @@ public class GoogleLoginActivity extends FragmentActivity implements
         // Indicate that the sign in process is complete.
         mSignInProgress = STATE_DEFAULT;
         getProfileInformation();
+        PicasaUtil.storeUserId(currentUser.getId());
         //retrieve access token
         new RetrieveTokenTask().execute(getAccountName());
     }
@@ -256,8 +257,7 @@ public class GoogleLoginActivity extends FragmentActivity implements
                 Log.e(TAG, "Name: " + personName + ", plusProfile: "
                         + personGooglePlusProfile + ", email: " + email
                         + ", Image: " + personPhotoUrl);
-                //retrieve access token
-                new RetrieveTokenTask().execute(getAccountName());
+
 
             } else {
                 Toast.makeText(getApplicationContext(),
@@ -482,10 +482,10 @@ public class GoogleLoginActivity extends FragmentActivity implements
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //((TextView) findViewById(R.id.token_value)).setText("Token Value: " + s);
-            //Log.e(TAG, "Token Value: " + s);
-//            Intent intent = new Intent(GoogleLoginActivity.this, PicasaPlusAlbumsActivity.class);
-//            startActivity(intent);
-//            finish();
+            Log.e(TAG, "Token Value: " + s);
+            Intent intent = new Intent(GoogleLoginActivity.this, PicasaPlusAlbumsActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 

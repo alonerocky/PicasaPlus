@@ -16,6 +16,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 
+import dev.shoulongli.appframework.network.PicasaRequest;
 import dev.shoulongli.appframework.network.VolleyWrapper;
 import dev.shoulongli.picasaplus.picasa.model.AlbumEntry;
 import dev.shoulongli.picasaplus.picasa.util.DeleteAlbumTask;
@@ -292,11 +293,35 @@ public class PicasaPlusAlbumsActivity extends ListActivity
             user = PicasaUtil.getUserId();
         }
         String url = PicasaWebAlbum.PICASA_WEB_ALBUM_URL + "/" + user;
-        if (PicasaUtil.getToken() != null) {
-            url += "?access_token=" + PicasaUtil.getToken();
-        }
+
+        /*
+            https://developers.google.com/youtube/v3/live/authentication
+            Calling the YouTube Live Streaming API
+            After obtaining an access token for a user, your application can use that token to submit authorized API requests on that user's behalf. The API supports two ways to specify an access token:
+
+            Specify the access token as the value of the Authorization: Bearer HTTP request header. This is the recommended approach.
+
+            GET /youtube/v3/channels?part=id&mine=true HTTP/1.1
+            Host: www.googleapis.com
+            Authorization: Bearer ACCESS_TOKEN
+            ...
+            You can test this using cURL with the following command:
+
+            curl -H "Authorization: Bearer ACCESS_TOKEN" https://www.googleapis.com/youtube/v3/channels?part=id&mine=true
+            Specify the access token as the value of the access_token query parameter:
+
+            https://www.googleapis.com/youtube/v3/channels?part=id&mine=true&access_token=ACCESS_TOKEN
+            You can test this using cURL with the following command:
+
+            curl https://www.googleapis.com/youtube/v3/channels?part=id&mine=true&access_token=ACCESS_TOKEN
+
+             */
+
+//        if (PicasaUtil.getToken() != null) {
+//            url += "?access_token=" + PicasaUtil.getToken();
+//        }
         if (fields != null) {
-            url += "&kind=album&alt=json&v=2.0&fields=" + fields;
+            url += "?kind=album&alt=json&v=2.0&fields=" + fields;
         }
 
         Log.e(TAG,"url: "+url);
@@ -324,7 +349,7 @@ public class PicasaPlusAlbumsActivity extends ListActivity
 			request.url = new GenericUrl(url);
 
 // Preparing volley's json object request
-            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, url,
+            PicasaRequest jsonObjReq = new PicasaRequest(Request.Method.GET, url,
                     null, new Response.Listener<JSONObject>() {
 
                 @Override

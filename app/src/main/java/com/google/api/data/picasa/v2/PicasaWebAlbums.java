@@ -27,7 +27,7 @@ public final class PicasaWebAlbums {
   public static final String VERSION = "2";
 
   /** Root URL. */
-  public static final String ROOT_URL = "http://picasaweb.google.com/data/";
+  public static final String ROOT_URL = "https://picasaweb.google.com/data/";
 
   /** The authentication token type used for Client Login. */
   public static final String AUTH_TOKEN_TYPE = "lh2";
