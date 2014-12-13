@@ -98,6 +98,40 @@ public class PicasaUtil
 			edit.commit(); 
 		}
 	}
+
+    public static void storeToken( String token) {
+        if(token != null)
+        {
+            Context context = PicasaPlusApplication.getInstance().getApplicationContext();
+            SharedPreferences prefs = context.getSharedPreferences("PREFERENCE",Context.MODE_PRIVATE);
+            Editor edit = prefs.edit();
+            edit.putString(Constants.ACCESS_TOKEN, token) ;
+            edit.commit();
+        }
+    }
+    public static String getToken() {
+        Context context = PicasaPlusApplication.getInstance().getApplicationContext();
+        SharedPreferences prefs = context.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE);
+        String token = prefs.getString(Constants.ACCESS_TOKEN, null);
+        return token;
+    }
+
+    public static void storeUserId(String id) {
+        if(id != null)
+        {
+            Context context = PicasaPlusApplication.getInstance().getApplicationContext();
+            SharedPreferences prefs = context.getSharedPreferences("PREFERENCE",Context.MODE_PRIVATE);
+            Editor edit = prefs.edit();
+            edit.putString(Constants.USER_ID, id) ;
+            edit.commit();
+        }
+    }
+    public static String getUserId() {
+        Context context = PicasaPlusApplication.getInstance().getApplicationContext();
+        SharedPreferences prefs = context.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE);
+        String id = prefs.getString(Constants.USER_ID, null);
+        return id;
+    }
 	
 
 }

@@ -287,12 +287,21 @@ public class PicasaPlusAlbumsActivity extends ListActivity
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+        String user = "default";
+        if (PicasaUtil.getUserId() != null) {
+            user = PicasaUtil.getUserId();
+        }
+        String url = PicasaWebAlbum.PICASA_WEB_ALBUM_URL + "/" + user;
+        if (PicasaUtil.getToken() != null) {
+            url += "?access_token=" + PicasaUtil.getToken();
+        }
+        if (fields != null) {
+            url += "&kind=album&alt=json&v=2.0&fields=" + fields;
+        }
 
-		String url = PicasaWebAlbum.PICASA_WEB_ALBUM_URL +"/lishoulong@gmail.com";
-		if(fields != null)
-		{
-			url += "?kind=album&alt=json&v=2.0&fields=" + fields;
-		}
+        Log.e(TAG,"url: "+url);
+
+
 
 		new RefreshAlbumsTask().execute(url); 
 

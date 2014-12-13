@@ -18,7 +18,9 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.android.gms.plus.model.people.PersonBuffer;
 
+import dev.shoulongli.picasaplus.PicasaPlusAlbumsActivity;
 import dev.shoulongli.picasaplus.R;
+import dev.shoulongli.picasaplus.picasa.util.PicasaUtil;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -36,6 +38,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,7 +54,9 @@ public class GoogleLoginActivity extends FragmentActivity implements
         ResultCallback<People.LoadPeopleResult>, View.OnClickListener {
 
     private static final String TAG = GoogleLoginActivity.class.getSimpleName();
-    public static final String SCOPE_PICASA = "http://picasaweb.google.com/data/";
+    public static final String SCOPE_PICASA = "https://picasaweb.google.com/data/";
+    public static final String SCOPE_PLUS_PROFILE = "https://www.googleapis.com/auth/plus.me";
+    public static final String SCOPE_PLUS_LOGIN = "https://www.googleapis.com/auth/plus.login";
     private static final int STATE_DEFAULT = 0;
     private static final int STATE_SIGN_IN = 1;
     private static final int STATE_IN_PROGRESS = 2;
@@ -214,8 +219,7 @@ public class GoogleLoginActivity extends FragmentActivity implements
         mSignOutButton.setEnabled(true);
         mRevokeButton.setEnabled(true);
 
-        //retrieve access token
-        new RetrieveTokenTask().execute(getAccountName());
+
 
         // Retrieve some profile information to personalize our app for the user.
         Person currentUser = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
@@ -229,7 +233,41 @@ public class GoogleLoginActivity extends FragmentActivity implements
 
         // Indicate that the sign in process is complete.
         mSignInProgress = STATE_DEFAULT;
+        getProfileInformation();
+        //retrieve access token
+        new RetrieveTokenTask().execute(getAccountName());
     }
+
+    /**
+     * Fetching user's information name, email, profile pic
+     */
+    private void getProfileInformation() {
+        try {
+            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                Person currentPerson = Plus.PeopleApi
+                        .getCurrentPerson(mGoogleApiClient);
+                String personName = currentPerson.getDisplayName();
+                String personPhotoUrl = currentPerson.getImage().getUrl();
+                String personGooglePlusProfile = currentPerson.getUrl();
+                String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+                mStatus.setText(String.format(
+                        getResources().getString(R.string.signed_in_as),
+                        currentPerson.getDisplayName()));
+                Log.e(TAG, "Name: " + personName + ", plusProfile: "
+                        + personGooglePlusProfile + ", email: " + email
+                        + ", Image: " + personPhotoUrl);
+                //retrieve access token
+                new RetrieveTokenTask().execute(getAccountName());
+
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "Person information is null", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /* onConnectionFailed is called when our Activity could not connect to Google
      * Play services.  onConnectionFailed indicates that the user needs to select
@@ -411,14 +449,17 @@ public class GoogleLoginActivity extends FragmentActivity implements
         @Override
         protected String doInBackground(String... params) {
             String accountName = params[0];
+            //https://developers.google.com/+/api/oauth
             //https://www.googleapis.com/auth/plus.login
             //https://www.googleapis.com/auth/plus.me
             String[] scopes = new String[]{
-                    Plus.SCOPE_PLUS_PROFILE.gs(),
+                    SCOPE_PLUS_PROFILE,
+                    //SCOPE_PLUS_LOGIN,
                     SCOPE_PICASA};
             String token = null;
             try {
                 token = GoogleAuthUtil.getToken(getApplicationContext(), accountName, "oauth2:" + TextUtils.join(" ", scopes));
+                PicasaUtil.storeToken(token);
             } catch (IOException e) {
                 // network or server error, the call is expected to succeed if you try again later.
                 // Don't attempt to call again immediately - the request is likely to
@@ -441,7 +482,10 @@ public class GoogleLoginActivity extends FragmentActivity implements
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //((TextView) findViewById(R.id.token_value)).setText("Token Value: " + s);
-            Log.e(TAG, "Token Value: " + s);
+            //Log.e(TAG, "Token Value: " + s);
+//            Intent intent = new Intent(GoogleLoginActivity.this, PicasaPlusAlbumsActivity.class);
+//            startActivity(intent);
+//            finish();
         }
     }
 

@@ -16,5 +16,9 @@ public class Constants
 	
 	public static final String PREF_KEY_OAUTH_TOKEN_SECRET = "picasaplus_oauth_token_secret";
 	public static final String PREF_KEY_OAUTH_TOKEN = "picasaplus_oauth_token";
-	
+
+    //new oauth, using google plus sigin button
+    public static final String ACCESS_TOKEN = "picasaplus_access_token";
+    public static final String USER_ID = "picasaplus_user_id";
+
 }
