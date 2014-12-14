@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpStatus;
 import org.json.JSONObject;
@@ -19,6 +20,7 @@ import com.google.api.client.http.HttpRequest;
 import dev.shoulongli.appframework.network.PicasaRequest;
 import dev.shoulongli.appframework.network.VolleyWrapper;
 import dev.shoulongli.picasaplus.picasa.model.AlbumEntry;
+import dev.shoulongli.picasaplus.picasa.model.json.AlbumFeed;
 import dev.shoulongli.picasaplus.picasa.util.DeleteAlbumTask;
 import dev.shoulongli.picasaplus.picasa.util.PicasaUtil;
 import dev.shoulongli.picasaplus.picasa.util.PicasaWebAlbum;
@@ -349,22 +351,21 @@ public class PicasaPlusAlbumsActivity extends ListActivity
 			request.url = new GenericUrl(url);
 
 // Preparing volley's json object request
-            PicasaRequest jsonObjReq = new PicasaRequest(Request.Method.GET, url,
-                    null, new Response.Listener<JSONObject>() {
+            PicasaRequest jsonObjReq = new PicasaRequest(url,
+                    AlbumFeed.class, new Response.Listener<AlbumFeed>() {
 
                 @Override
-                public void onResponse(JSONObject response) {
-                    Log.e(TAG, "Albums Response: " + response.toString());
+                public void onResponse(AlbumFeed response) {
+                    //Log.e(TAG, "Albums Response: " + response.toString());
 
-
-
+                    Log.e(TAG,"response: "+response.entry.size());
 
                 }
             }, new Response.ErrorListener() {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e(TAG, "Volley Error: " + error.getMessage());
+                    //Log.e(TAG, "Volley Error: " + error.getMessage());
 
 
 
@@ -376,23 +377,23 @@ public class PicasaPlusAlbumsActivity extends ListActivity
             jsonObjReq.setShouldCache(false);
             VolleyWrapper.getInstance(PicasaPlusAlbumsActivity.this).getRequestQueue().add(jsonObjReq);
 			ArrayList<AlbumEntry> result = new ArrayList<AlbumEntry>();
-//			try
-//			{
-//				com.google.api.client.http.HttpResponse response = request.execute();
-//				int status = response.statusCode;
-//				if(status == HttpStatus.SC_OK)
-//				{
-//					result = RssFeedParserFactory.getParser(RssFeedParserType.SAX).getAlbums(response.getContent());
-//				}
-//				else if(status == HttpStatus.SC_FORBIDDEN || status == HttpStatus.SC_UNAUTHORIZED )
-//				{
-//
-//				}
-//			}
-//			catch(Exception e)
-//			{
-//				Log.e(TAG, "Error! "+e);
-//			}
+			try
+			{
+				com.google.api.client.http.HttpResponse response = request.execute();
+				int status = response.statusCode;
+				if(status == HttpStatus.SC_OK)
+				{
+					result = RssFeedParserFactory.getParser(RssFeedParserType.SAX).getAlbums(response.getContent());
+				}
+				else if(status == HttpStatus.SC_FORBIDDEN || status == HttpStatus.SC_UNAUTHORIZED )
+				{
+
+				}
+			}
+			catch(Exception e)
+			{
+				Log.e(TAG, "Error! "+e);
+			}
 			return result;
 		}
 		@Override 
